@@ -12,6 +12,7 @@ import de.lamali.tubsbot.reactionroles.ReactionGroup;
 import de.lamali.tubsbot.reactionroles.ReactionGroupManager;
 import de.lamali.tubsbot.reactionroles.ReactionRole;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -21,6 +22,9 @@ public class ReactionAddToGroupCommand implements ServerCommand {
 
 	@Override
 	public void performCommand(Member m, TextChannel chan, Message mess) {
+		if (!m.hasPermission(Permission.ADMINISTRATOR)) { 
+			return;
+		}
 		ReactionGroupManager groupMan = TubsBot.INSTANCE.getGroupMan();
 		
 		
