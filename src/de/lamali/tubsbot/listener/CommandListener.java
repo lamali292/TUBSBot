@@ -42,18 +42,12 @@ public class CommandListener extends ListenerAdapter{
 	
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event) {
-		User user = event.getUser();
-		if(!user.isBot()) {
-			TubsBot.INSTANCE.getGroupMan().addEvent(user, event);
-		}
+		TubsBot.INSTANCE.getGroupMan().addEvent(event);
 	}
 	
 	
 	@Override
 	public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-		User user = event.getUser();
-		if(!user.isBot()) {
-			TubsBot.INSTANCE.getGroupMan().removeEvent(user, event);
-		}
+		TubsBot.INSTANCE.getGroupMan().removeEvent(event);
 	}
 }

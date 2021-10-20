@@ -90,7 +90,8 @@ public class ReactionGroupManager {
 
 	}
 
-	public void addEvent(User user, MessageReactionAddEvent event) {
+	public void addEvent(MessageReactionAddEvent event) {
+		String user = event.getUserId();
 		for (ReactionGroup group : groups) {
 			for (ReactionRole role : group.getReactionRoles()) {
 				String channelID = event.getChannel().getId();
@@ -99,13 +100,14 @@ public class ReactionGroupManager {
 
 				if (emote.equals(role.getEmote()) && channelID.equals(role.getChannelID())
 						&& messageID.equals(role.getMessageID())) {
-					event.getGuild().addRoleToMember(user.getId(), event.getJDA().getRoleById(role.getRoleID())).queue();
+					event.getGuild().addRoleToMember(user, event.getJDA().getRoleById(role.getRoleID())).queue();
 				}
 			}
 		}
 	}
 
-	public void removeEvent(User user, MessageReactionRemoveEvent event) {
+	public void removeEvent(MessageReactionRemoveEvent event) {
+		String user = event.getUserId();
 		for (ReactionGroup group : groups) {
 			for (ReactionRole role : group.getReactionRoles()) {
 				String channelID = event.getChannel().getId();
@@ -114,7 +116,7 @@ public class ReactionGroupManager {
 
 				if (emote.equals(role.getEmote()) && channelID.equals(role.getChannelID())
 						&& messageID.equals(role.getMessageID())) {
-					event.getGuild().removeRoleFromMember(user.getId(), event.getJDA().getRoleById(role.getRoleID()))
+					event.getGuild().removeRoleFromMember(user, event.getJDA().getRoleById(role.getRoleID()))
 							.queue();
 				}
 			}
