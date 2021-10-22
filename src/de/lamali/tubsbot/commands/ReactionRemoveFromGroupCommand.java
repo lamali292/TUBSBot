@@ -18,11 +18,10 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ReactionAddToGroupCommand implements ServerCommand {
+public class ReactionRemoveFromGroupCommand implements ServerCommand {
 
 	@Override
 	public void performCommand(Member m, TextChannel chan, Message mess) {
-		
 		if (!m.hasPermission(Permission.ADMINISTRATOR)) { 
 			return;
 		}
@@ -31,46 +30,34 @@ public class ReactionAddToGroupCommand implements ServerCommand {
 		
 		String[] args = mess.getContentDisplay().split(" ");
 		String groupName = args[1];
-		String channelID = args[2];
-		String messageID = args[3];
-		String roleID = args[4];
-		String emote = EmojiParser.parseToUnicode(args[5]);
-		
-		String roleAsMention = mess.getJDA().getRoleById(roleID).getAsMention();
-		TextChannel textchannel = mess.getJDA().getTextChannelById(channelID);
-		
+		String emote = EmojiParser.parseToUnicode(args[2]);
 		ReactionGroup group = groupMan.getGroup(serverID, groupName);
+		
 		if(group == null) {
 			chan.sendMessage("group "+groupName+" doesnt exist").queue();
 			mess.delete().queue();
 			return;
 		}
+			
+		ReactionRole role = group.getFromEmote(emote);
+		group.remove(role);
 		
-		ReactionRole role = new ReactionRole(emote, channelID, messageID, roleID);
-		for (ReactionRole roles : group.getReactionRoles()) {
-			if (roles.equals(role)) {
-				chan.sendMessage("Role "+roleAsMention+" already exists in group "+groupName).queue();
-				mess.delete().queue();
-				return;
-			}
-		}
-		
-		group.add(role);
+		String roleAsMention = mess.getJDA().getRoleById(role.getRoleID()).getAsMention();
+		TextChannel textchannel = mess.getJDA().getTextChannelById(role.getChannelID());
 	
 		
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setColor(Color.gray);
 		embed.setTimestamp(Instant.now());
-		embed.setTitle("Added Role to Role Group:");
-		embed.setDescription("Added role "+roleAsMention+" to group "+groupName+" with emote "+emote+" in "+textchannel.getAsMention()+"\n");
+		embed.setTitle("Removed Role to Role Group:");
+		embed.setDescription("Removed role "+roleAsMention+" from group "+groupName+" with emote "+emote+" in "+textchannel.getAsMention()+"\n");
 				
 		embed.addField("Command", mess.getContentDisplay(), true);
 		
 		MessageEmbed mes = embed.build();
 		chan.sendMessageEmbeds(mes).queue();
 		
-		TextChannel channel = chan.getJDA().getTextChannelById(channelID);
-		channel.addReactionById(messageID, emote).queue();
+		textchannel.removeReactionById(role.getMessageID(), emote).queue();
 		
 		groupMan.save(serverID);
 		mess.delete().queue();

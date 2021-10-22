@@ -13,7 +13,8 @@ public class ReactionSaveCommand implements ServerCommand{
 		if (!m.hasPermission(Permission.ADMINISTRATOR)) { 
 			return;
 		}
-		TubsBot.INSTANCE.getGroupMan().save();
+		String serverID = channel.getGuild().getId();
+		TubsBot.INSTANCE.getGroupMan().save(serverID);
 	}
 
 }

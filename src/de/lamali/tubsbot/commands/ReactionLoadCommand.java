@@ -13,7 +13,8 @@ public class ReactionLoadCommand implements ServerCommand{
 		if (!m.hasPermission(Permission.ADMINISTRATOR)) { 
 			return;
 		}
-		TubsBot.INSTANCE.getGroupMan().load();
+		String serverID = channel.getGuild().getId();
+		TubsBot.INSTANCE.getGroupMan().load(serverID);
 	}
 
 }

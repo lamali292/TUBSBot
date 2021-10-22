@@ -20,8 +20,10 @@ public class CommandManager {
 		
 		this.serverCommands.put("help", new HelpCommand());
 		this.serverCommands.put("rgadd", new ReactionGroupAddCommand());
+		this.serverCommands.put("rgrm", new ReactionGroupRemoveCommand());
 		this.serverCommands.put("rglist", new ReactionGroupListCommand());
 		this.serverCommands.put("addrole", new ReactionAddToGroupCommand());
+		this.serverCommands.put("rmrole", new ReactionRemoveFromGroupCommand());
 		this.serverCommands.put("save", new ReactionSaveCommand());
 		this.serverCommands.put("load", new ReactionLoadCommand());
 	}

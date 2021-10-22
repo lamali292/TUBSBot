@@ -17,6 +17,19 @@ public class ReactionGroup {
 		group.add(role);
 	}
 	
+	public void remove(ReactionRole role) {
+		group.remove(role);
+	}
+	
+	public ReactionRole getFromEmote(String emote) {
+		for (ReactionRole role : group) {
+			if (role.getEmote().equals(emote)) {
+				return role;
+			}
+		}
+		return null;
+	}
+	
 	public ArrayList<ReactionRole> getReactionRoles() {
 		return group;
 	}
@@ -37,4 +50,5 @@ public class ReactionGroup {
 		}
 		return false;
 	}
+
 }

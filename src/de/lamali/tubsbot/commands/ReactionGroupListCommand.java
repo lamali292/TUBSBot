@@ -20,9 +20,10 @@ public class ReactionGroupListCommand implements ServerCommand {
 	public void performCommand(Member m, TextChannel chan, Message mess) {
 		ReactionGroupManager groupMan = TubsBot.INSTANCE.getGroupMan();
 		String[] args = mess.getContentDisplay().split(" ");
+		String serverID = chan.getGuild().getId();
 		if (args.length == 1) {
 			String names = "";
-			for (ReactionGroup group : groupMan.getGroups()) {
+			for (ReactionGroup group : groupMan.getGroups(serverID)) {
 				names = names + group.getName() + "\n";
 			}
 			
@@ -38,7 +39,7 @@ public class ReactionGroupListCommand implements ServerCommand {
 		
 		} else {
 			String name = args[1];
-			ReactionGroup group = groupMan.getGroup(name);
+			ReactionGroup group = groupMan.getGroup(serverID, name);
 			if(group != null) {
 				String emotes = "";
 				String roles = "";

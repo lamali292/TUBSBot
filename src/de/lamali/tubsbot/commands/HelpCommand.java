@@ -21,8 +21,19 @@ public class HelpCommand implements ServerCommand{
 			embed.setTitle("Commands:");
 			embed.setDescription("[]: required \n (): unrequired");
 			
-			embed.addField("Stuff", "!help \n !groupAdd [name] (maxRoles)\n !addRole [name] [channelID] [messageID] [roleID] [emote]", true);
-			embed.addField("", "open help menu \n add new ReactionRoleGroup\n add role to role group", true);
+			embed.addField("Stuff", 
+					"!help \n"
+					+ "!rgadd [name] (maxRoles)\n"
+					+ "!rgrm [name]\n"
+					+ "!addrole [name] [channelID] [messageID] [roleID] [emote]\n"
+					+ "!rmrole [name] [emote]\n"
+					+ "!rglist (name)", true);
+			embed.addField("", "open help menu \n"
+					+ "add new ReactionRoleGroup \n"
+					+ "remove ReactionRoleGroup \n"
+					+ "add role to role group\n\n"
+					+ "remove role from role group\n"
+					+ "list groups", true);
 			
 			MessageEmbed mes = embed.build();
 			channel.sendMessageEmbeds(mes).queue();

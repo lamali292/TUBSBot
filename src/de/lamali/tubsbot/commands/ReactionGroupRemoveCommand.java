@@ -2,13 +2,12 @@ package de.lamali.tubsbot.commands;
 
 import de.lamali.tubsbot.TubsBot;
 import de.lamali.tubsbot.commands.types.ServerCommand;
-import de.lamali.tubsbot.reactionroles.ReactionGroup;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ReactionGroupAddCommand implements ServerCommand {
+public class ReactionGroupRemoveCommand implements ServerCommand {
 
 	@Override
 	public void performCommand(Member m, TextChannel chan, Message mess) {
@@ -17,16 +16,11 @@ public class ReactionGroupAddCommand implements ServerCommand {
 		}
 		String serverID = chan.getGuild().getId();
 		String[] args = mess.getContentDisplay().split(" ");
-		String name = args[1];
-		int maxRoles = 100;
-		if(args.length > 2) {
-			maxRoles = Integer.parseInt(args[2]);
-		}
-		ReactionGroup group = new ReactionGroup(name, maxRoles);
-		if(TubsBot.INSTANCE.getGroupMan().add(serverID, group)) {
-			chan.sendMessage("Reaction Group "+name+" added").queue();
+		String name = args[1];		
+		if(TubsBot.INSTANCE.getGroupMan().remove(serverID, name)) {
+			chan.sendMessage("Reaction Group "+name+" removed").queue();
 		} else {
-			chan.sendMessage("Reaction Group "+name+" already exists").queue();
+			chan.sendMessage("Reaction Group "+name+" doesnt exist").queue();
 		}
 		
 		mess.delete().queue();
